@@ -48,7 +48,7 @@ app.use(function(req, res, next)
 			if (err) throw err;
 			console.log(imagedata);
  		        res.writeHead(200, {'content-type':'text/html'});
-    			res.write("<h1>\n<img src='data:my_pic.jpg;base64,"+imagedata+"'/>");
+    			res.write("<h1>\n<img src='data:my_pic.jpg;base64,"+imagedata+"'/><br>returned from host: " + req.client.server._connectionKey.slice(7,11));
 			res.end();
  		})
     	//res.end();
@@ -64,7 +64,7 @@ app.get('/set',function(req,res){
 app.get('/get',function(req,res){
 	client.get("key1",function(err,value){
 	//console.log(value);
-	res.send(value);
+	res.send(value+" returned from host port: "+req.client.server._connectionKey.slice(7,11));
 	});
 })
 
@@ -81,4 +81,8 @@ app.get('/recent',function(req,res){
 
    console.log('Example app listening at http://%s:%s', host, port)
  })
+
+app.get('/',function(req,res){
+	res.send('hello world<br>returned from host: '+ req.client.server._connectionKey(7,11))
+})
 

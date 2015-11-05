@@ -12,14 +12,12 @@ client.del("redirects");
 
 client.lpush("redirects","http://127.0.0.1:3001");
 client.lpush("redirects","http://127.0.0.1:3002");
-client.lpush("redirects","http://127.0.0.1:3003");
-client.lpush("redirects","http://127.0.0.1:3004");
 
 var proxy = httpProxy.createProxyServer({});
 http.createServer(function(req, res) {
 	client.rpoplpush("redirects","redirects",function(err,value){
 		proxy.web(req, res, { target: value });
-		console.log("request redirected to:" + value);
+		console.log("request redirected to: " + value);
 	})
 
 }).listen(3000);
